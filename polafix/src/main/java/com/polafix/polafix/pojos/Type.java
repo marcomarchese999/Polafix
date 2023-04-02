@@ -1,5 +1,6 @@
 package com.polafix.polafix.pojos;
 
+
 public enum Type {
    
     GOLD(1.5f),

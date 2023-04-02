@@ -3,10 +3,22 @@ package com.polafix.polafix.pojos;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
+@Entity
 public class SerieUser {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private Serie serie;
     private int currentSeason;
+    @OneToMany
     private ArrayList<ChapterSeen> userChapters;
 
     public SerieUser(Serie serie) {

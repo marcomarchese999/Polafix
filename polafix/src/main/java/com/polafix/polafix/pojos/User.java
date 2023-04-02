@@ -7,8 +7,11 @@ import java.time.Year;
 import java.time.Month;
 import java.util.Objects;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
+@Entity
 public class User {
 
     @Id
@@ -19,9 +22,13 @@ public class User {
     private Date dateOfBirth;
     private String IBAN;
     private String password;
+    @OneToMany
     private ArrayList<SerieUser> ended;
+    @OneToMany
     private ArrayList<SerieUser> started;
+    @OneToMany
     private ArrayList<SerieUser> inlist;
+    @OneToMany
     private ArrayList<Balance> balances;
 
     public User(String email, Subscription type, String IBAN, String name, String surname, Date dateOfBirth){

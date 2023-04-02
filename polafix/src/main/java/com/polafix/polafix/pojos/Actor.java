@@ -3,11 +3,22 @@ package com.polafix.polafix.pojos;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+@Entity
 public class Actor {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
     private String name;
     private String surname;
-
+    @ManyToMany(mappedBy = "actors")
     public ArrayList<Serie> series;
 
     public Actor(String name, String surname, ArrayList<Serie> series) {

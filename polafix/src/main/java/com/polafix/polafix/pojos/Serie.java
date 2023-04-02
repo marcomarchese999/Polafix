@@ -3,14 +3,25 @@ package com.polafix.polafix.pojos;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+
+@Entity
 public class Serie {
 
+    @Id
     private String idSerie;
     private String name;
     private Type type;
     private String shortDescription;
+    @OneToMany
     private ArrayList<Season> seasons;
+    @ManyToMany
     private ArrayList<Actor> actors;
+    @ManyToMany
     private ArrayList<Creator> creators;
 
     public Serie(String idSerie, String name, Type type, String shortDescription) {

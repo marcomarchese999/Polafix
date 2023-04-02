@@ -2,6 +2,9 @@ package com.polafix.polafix.pojos;
 
 import java.util.Objects;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class ChapterSeen {
     
     private ChapterState state;

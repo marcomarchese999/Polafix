@@ -3,9 +3,18 @@ package com.polafix.polafix.pojos;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Season {
+
+    @Id
     private String title;
+    @Id
     private int number;
+    @OneToMany
     private ArrayList<Chapter> chapters;
 
     public Season(String title, int number) {

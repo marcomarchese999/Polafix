@@ -2,8 +2,16 @@ package com.polafix.polafix.pojos;
 
 import java.util.Objects;
 
+import javax.persistence.Entity;
+
+import javax.persistence.Id;
+
+@Entity
 public class Chapter {
+
+    @Id
     private int number;
+    @Id
     private String title;
     private String description;
 
