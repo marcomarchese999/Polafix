@@ -7,28 +7,38 @@ import java.time.Year;
 import java.time.Month;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
     private String email;
+    @Column(name = "name")
     private String name;
+    @Column(name = "surname")
     private String surname;
+    @Column(name = "type")
     private Subscription type;
+    @Column(name = "dateOfBirth")
     private Date dateOfBirth;
+    @Column(name = "IBAN")
     private String IBAN;
+    @Column(name = "password")
     private String password;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private ArrayList<SerieUser> ended;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private ArrayList<SerieUser> started;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private ArrayList<SerieUser> inlist;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private ArrayList<Balance> balances;
 
     public User(String email, Subscription type, String IBAN, String name, String surname, Date dateOfBirth){
