@@ -2,21 +2,17 @@ package com.polafix.polafix.pojos;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "chapters")
 public class Chapter {
 
     @Id
     private int number;
-    @Id
+    //@Id
     private String title;
-    @Column(name = "description")
     private String description;
 
     public Chapter(int number, String title, String description) {

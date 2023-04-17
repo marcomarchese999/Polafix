@@ -3,43 +3,35 @@ package com.polafix.polafix.pojos;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.time.Year;
 import java.time.Month;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "users")
 public class User {
 
     @Id
     private String email;
-    @Column(name = "name")
     private String name;
-    @Column(name = "surname")
     private String surname;
-    @Column(name = "type")
     private Subscription type;
-    @Column(name = "dateOfBirth")
     private Date dateOfBirth;
-    @Column(name = "IBAN")
     private String IBAN;
-    @Column(name = "password")
     private String password;
+    @OneToMany
+    private List<SerieUser> ended;
+    @OneToMany
+    private List<SerieUser> started;
+    @OneToMany
+    private List<SerieUser> inlist;
     @OneToMany(cascade = CascadeType.ALL)
-    private ArrayList<SerieUser> ended;
-    @OneToMany(cascade = CascadeType.ALL)
-    private ArrayList<SerieUser> started;
-    @OneToMany(cascade = CascadeType.ALL)
-    private ArrayList<SerieUser> inlist;
-    @OneToMany(cascade = CascadeType.ALL)
-    private ArrayList<Balance> balances;
+    private List<Balance> balances;
 
     public User(String email, Subscription type, String IBAN, String name, String surname, Date dateOfBirth){
         this.name=name;
@@ -84,11 +76,11 @@ public class User {
         return this.password;
     }
 
-    public ArrayList<Balance> getBalances() {
+    public List<Balance> getBalances() {
         return this.balances;
     }
 
-    public void setBalances(ArrayList<Balance> balances) {
+    public void setBalances(List<Balance> balances) {
         this.balances = balances;
     }
 
@@ -124,15 +116,15 @@ public class User {
         this.IBAN = IBAN;
     }
 
-    public ArrayList<SerieUser> getEnded() {
+    public List<SerieUser> getEnded() {
         return ended;
     }
 
-    public ArrayList<SerieUser> getStarted() {
+    public List<SerieUser> getStarted() {
         return started;
     }
 
-    public ArrayList<SerieUser> getInlist() {
+    public List<SerieUser> getInlist() {
         return inlist;
     }
 
@@ -167,7 +159,7 @@ public class User {
     } 
 
     public Balance getHistoryBalance(Month month, Year year){
-        ArrayList<Balance> balances = this.getBalances();
+        List<Balance> balances = this.getBalances();
         for (Balance balance : balances){
             Month m = balance.getMonth();
             Year y = balance.getYear();
@@ -178,7 +170,7 @@ public class User {
         return null;
     }
     
-    private boolean isInList(Serie serie, ArrayList<SerieUser> lista){
+    private boolean isInList(Serie serie, List<SerieUser> lista){
         for(SerieUser s : lista){
             if(s.getSerie().equals(serie)){
                 return true;
@@ -187,7 +179,7 @@ public class User {
         return false;
     }
 
-    private boolean isInListUser(SerieUser serie, ArrayList<SerieUser> lista){ 
+    private boolean isInListUser(SerieUser serie, List<SerieUser> lista){ 
         for(SerieUser s : lista){ 
             if(s.getSerie().equals(serie.getSerie())){ 
                 return true; 
@@ -203,7 +195,7 @@ public class User {
         }
     }
 
-    private SerieUser getSerieUser(ArrayList<SerieUser> lista, SerieUser serie){
+    private SerieUser getSerieUser(List<SerieUser> lista, SerieUser serie){
         for(int i=0; i<lista.size(); i++){
             if(lista.get(i).getSerie().equals(serie.getSerie())){
                 return lista.get(i);
@@ -266,7 +258,7 @@ public class User {
 
 
 
-    public SerieUser viewSerieUser(ArrayList<SerieUser> userList, String nameSerie){
+    public SerieUser viewSerieUser(List<SerieUser> userList, String nameSerie){
         for (SerieUser serieUtente : userList) {
             if(serieUtente.getSerie().getName().equals(nameSerie))
                 return serieUtente;

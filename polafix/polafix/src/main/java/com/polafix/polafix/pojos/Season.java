@@ -1,24 +1,23 @@
 package com.polafix.polafix.pojos;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "seasons")
 public class Season {
 
     @Id
-    private String title;
-    @Id
     private int number;
+    //@Id
+    private String title;
     @OneToMany(cascade = CascadeType.ALL)
-    private ArrayList<Chapter> chapters;
+    private List<Chapter> chapters;
 
     public Season(String title, int number) {
         setTitle(title);
@@ -34,7 +33,7 @@ public class Season {
         return this.number;
     }
 
-    public ArrayList<Chapter> getChapters() {
+    public List<Chapter> getChapters() {
         return this.chapters;
     }
 

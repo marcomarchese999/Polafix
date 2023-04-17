@@ -2,35 +2,30 @@ package com.polafix.polafix.pojos;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import java.time.Year;
 import java.time.Month;
 
 @Entity
-@Table(name = "balances")
 public class Balance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "amount")
     private float amount;
-    @Column(name = "month")
     private Month month;
-    @Column(name = "year")
     private Year year;
     @OneToMany(cascade = CascadeType.ALL)
-    private ArrayList<Charge> charges;
+    private List<Charge> charges;
 
     public Balance(float amount, Month month, Year year) {
         this.amount = amount;
@@ -43,7 +38,7 @@ public class Balance {
         this.amount = amount;
     }
 
-    public ArrayList<Charge> getCharges() {
+    public List<Charge> getCharges() {
         return this.charges;
     }
 
@@ -75,24 +70,9 @@ public class Balance {
     }
     
 
-    public ArrayList<Charge> getAllCharges() {
+    public List<Charge> getAllCharges() {
         return charges;
     }
-
-    /*public ArrayList<Charge> getCharges(int month, int year){
-        ArrayList<Charge> charges = getAllCharges();
-        ArrayList<Charge> chargesInDate = new ArrayList<Charge>();
-
-        for(int i=0; i<charges.size(); i++){
-            LocalDate date = charges.get(i).getDate();
-            int anno = date.getYear();
-            int mese = date.getMonthValue();
-            if(year==anno && mese==month){
-                chargesInDate.add(charges.get(i));
-            }
-        }
-        return chargesInDate;
-    }*/
 
     public void addCharge(Charge charge){
         this.getAllCharges().add(charge);

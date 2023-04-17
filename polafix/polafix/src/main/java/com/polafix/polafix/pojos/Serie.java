@@ -1,35 +1,30 @@
 package com.polafix.polafix.pojos;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "series")
 public class Serie {
 
     @Id
     private String idSerie;
-    @Column(name = "name")
     private String name;
-    @Column(name = "type")
     private Type type;
-    @Column(name = "shortDescription")
     private String shortDescription;
     @OneToMany(cascade = CascadeType.ALL)
-    private ArrayList<Season> seasons;
-    @ManyToMany(cascade = CascadeType.ALL)
-    private ArrayList<Actor> actors;
-    @ManyToMany(cascade = CascadeType.ALL)
-    private ArrayList<Creator> creators;
+    private List<Season> seasons;
+    @ManyToMany
+    private List<Actor> actors;
+    @ManyToMany
+    private List<Creator> creators;
 
     public Serie(String idSerie, String name, Type type, String shortDescription) {
         setIdSerie(idSerie);
@@ -65,15 +60,15 @@ public class Serie {
         return shortDescription;
     }
 
-    public ArrayList<Season> getSeasons() {
+    public List<Season> getSeasons() {
         return seasons;
     }
 
-    public ArrayList<Actor> getActors() {
+    public List<Actor> getActors() {
         return actors;
     }
 
-    public ArrayList<Creator> getCreators() {
+    public List<Creator> getCreators() {
         return creators;
     }
 
@@ -100,21 +95,21 @@ public class Serie {
             this.seasons.add(season);
     }
 
-    public void setSeasons(ArrayList<Season> stagioni){
+    public void setSeasons(List<Season> stagioni){
         for(int i=0; i<stagioni.size(); i++){
             if(!seasons.contains(stagioni.get(i)))
                 this.addSeason(stagioni.get(i));
         }
     }
 
-    public void setActors(ArrayList<Actor> attori){
+    public void setActors(List<Actor> attori){
         for(int i=0; i<attori.size(); i++){
             if(!actors.contains(attori.get(i)))
                 this.addActor(attori.get(i));
         }
     }
 
-    public void setCreators(ArrayList<Creator> creatori){
+    public void setCreators(List<Creator> creatori){
         for(int i=0; i<creatori.size(); i++){
             if(!creators.contains(creatori.get(i)))
                 this.addCreator(creatori.get(i));
