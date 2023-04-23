@@ -33,6 +33,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Balance> balances;
 
+
+    public User() {}
+
     public User(String email, Subscription type, String IBAN, String name, String surname, Date dateOfBirth){
         this.name=name;
         this.surname=surname;

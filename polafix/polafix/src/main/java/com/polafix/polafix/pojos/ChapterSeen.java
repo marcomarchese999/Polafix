@@ -11,6 +11,8 @@ public class ChapterSeen {
     private int numberSeason;
     private int numberChapter;
 
+    public ChapterSeen() {}
+
     public ChapterSeen(ChapterState state, int numberSeason, int numberChapter) {
         this.state = state;
         this.numberSeason = numberSeason;

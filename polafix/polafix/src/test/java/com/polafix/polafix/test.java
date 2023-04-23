@@ -31,7 +31,7 @@ public class test {
     private String IBAN = "xxxxxxxxxxxxx";
     private String date_string = "20/09/1990";
 
-    private String idSerie = "@seriexx";
+    //private String idSerie = "@seriexx";
     private String serieName = "Lost";
     private Type typeSerie = Type.SILVER;
     private String description = ".........";
@@ -101,7 +101,7 @@ public class test {
     //Test on the singole method of the Serie class to see if it's implemented well
     @Test
     public void testSerie(){
-        Serie lost = new Serie(idSerie, serieName, typeSerie, description);
+        Serie lost = new Serie(serieName, typeSerie, description);
         Season lost1 = new Season("Lost1", 1);
         Chapter lost1_1 = new Chapter(1, "lost1_1", description);
         Chapter lost1_2 = new Chapter(2, "lost1_2", description);
@@ -137,7 +137,7 @@ public class test {
         User utente = new User(email, type, IBAN, name, surname, date);
 
         //Create a new serie
-        Serie lost = new Serie(idSerie, serieName, typeSerie, description);
+        Serie lost = new Serie(serieName, typeSerie, description);
         Season lost1 = new Season("Lost1", 1);
         Chapter lost1_1 = new Chapter(1, "lost1_1", description);
         Chapter lost1_2 = new Chapter(2, "lost1_2", description);
@@ -198,7 +198,7 @@ public class test {
         User utente = new User(email, type, IBAN, name, surname, date);
 
         //Create a new serie
-        Serie lost = new Serie(idSerie, serieName, typeSerie, description);
+        Serie lost = new Serie(serieName, typeSerie, description);
         Season lost1 = new Season("Lost1", 1);
         Chapter lost1_1 = new Chapter(1, "lost1_1", description);
         Chapter lost1_2 = new Chapter(2, "lost1_2", description);
@@ -242,7 +242,7 @@ public class test {
         User utente = new User(email, type, IBAN, name, surname, date); 
  
         //Create a new serie 
-        Serie lost = new Serie(idSerie, serieName, typeSerie, description); 
+        Serie lost = new Serie(serieName, typeSerie, description); 
  
         //Season 1 
         Season lost1 = new Season("Lost1", 1); 

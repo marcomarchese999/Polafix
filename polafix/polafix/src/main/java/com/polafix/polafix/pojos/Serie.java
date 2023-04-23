@@ -6,6 +6,8 @@ import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -15,7 +17,8 @@ import javax.persistence.OneToMany;
 public class Serie {
 
     @Id
-    private String idSerie;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long idSerie;
     private String name;
     private Type type;
     private String shortDescription;
@@ -26,8 +29,10 @@ public class Serie {
     @ManyToMany
     private List<Creator> creators;
 
-    public Serie(String idSerie, String name, Type type, String shortDescription) {
-        setIdSerie(idSerie);
+    public Serie() {}
+
+    public Serie(String name, Type type, String shortDescription) {
+        
         setName(name);
         setType(type);
         setShortDescription(shortDescription);
@@ -37,13 +42,11 @@ public class Serie {
     } 
 
 
-    public String getIdSerie() {
+    public Long getIdSerie() {
         return this.idSerie;
     }
 
-    public void setIdSerie(String idSerie) {
-        this.idSerie = idSerie;
-    }
+    
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
     }

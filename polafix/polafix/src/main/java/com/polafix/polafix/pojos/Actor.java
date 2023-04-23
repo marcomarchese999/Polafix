@@ -22,6 +22,10 @@ public class Actor {
     @ManyToMany(mappedBy = "actors")
     public List<Serie> series;
 
+
+    public Actor() {}
+
+
     public Actor(String name, String surname, List<Serie> series) {
         
         this.name = name;

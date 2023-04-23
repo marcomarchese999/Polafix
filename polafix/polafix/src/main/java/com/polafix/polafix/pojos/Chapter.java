@@ -3,17 +3,23 @@ package com.polafix.polafix.pojos;
 import java.util.Objects;
 
 import javax.persistence.Entity;
-
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Chapter {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private int number;
-    //@Id
     private String title;
     private String description;
+
+
+    public Chapter() {}
+    
 
     public Chapter(int number, String title, String description) {
         setNumber(number);

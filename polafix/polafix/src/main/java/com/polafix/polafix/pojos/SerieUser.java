@@ -23,6 +23,8 @@ public class SerieUser {
     @ElementCollection
     private List<ChapterSeen> userChapters;
 
+    public SerieUser() {}
+
     public SerieUser(Serie serie) {
         this.serie = serie;
         this.currentSeason = 1;
