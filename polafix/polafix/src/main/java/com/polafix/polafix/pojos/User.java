@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+//import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -25,10 +26,13 @@ public class User {
     private String IBAN;
     private String password;
     @OneToMany
+    //(fetch = FetchType.EAGER)
     private List<SerieUser> ended;
     @OneToMany
+    //(fetch = FetchType.EAGER)
     private List<SerieUser> started;
     @OneToMany
+    //(fetch = FetchType.EAGER)
     private List<SerieUser> inlist;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Balance> balances;
@@ -282,6 +286,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, name, surname, type, dateOfBirth, IBAN, password, ended, started, inlist, balances);
+        return Objects.hash(email);
     }
 }

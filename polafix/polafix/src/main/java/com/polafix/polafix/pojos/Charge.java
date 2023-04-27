@@ -58,12 +58,12 @@ public class Charge {
             return false;
         }
         Charge charge = (Charge) o;
-        return Objects.equals(date, charge.date) && Objects.equals(name, charge.name) && season == charge.season && number == charge.number && price == charge.price;
+        return Objects.equals(id, charge.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(date, name, season, number, price);
+        return Objects.hash(id);
     }
 
 

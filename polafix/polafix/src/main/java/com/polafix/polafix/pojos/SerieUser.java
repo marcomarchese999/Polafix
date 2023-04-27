@@ -101,12 +101,12 @@ public class SerieUser {
             return false;
         }
         SerieUser serieU = (SerieUser) o;
-        return Objects.equals(serie, serieU.serie);
+        return Objects.equals(id, serieU.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(serie);
+        return Objects.hash(id);
     }
 }
 

@@ -56,12 +56,12 @@ public class Creator {
             return false;
         }
         Creator creator = (Creator) o;
-        return Objects.equals(name, creator.name) && Objects.equals(surname, creator.surname) && Objects.equals(series, creator.series);
+        return Objects.equals(id, creator.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname);
+        return Objects.hash(id);
     }
    
 }

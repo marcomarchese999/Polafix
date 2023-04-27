@@ -92,12 +92,12 @@ public class Balance {
             return false;
         }
         Balance balance = (Balance) o;
-        return Objects.equals(month, balance.month) && Objects.equals(year, balance.year);
+        return Objects.equals(id, balance.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(month, year);
+        return Objects.hash(id);
     }
 
 }

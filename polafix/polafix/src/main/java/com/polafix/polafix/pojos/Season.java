@@ -72,7 +72,7 @@ public class Season {
         }
         return null;
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -87,7 +87,7 @@ public class Season {
     @Override
     public int hashCode() {
         return Objects.hash(title, number, chapters);
-    }
+    } 
 
 
 }

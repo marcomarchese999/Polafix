@@ -59,11 +59,11 @@ public class Chapter {
             return false;
         }
         Chapter chapter = (Chapter) o;
-        return number == chapter.number && Objects.equals(title, chapter.title) && Objects.equals(description, chapter.description);
+        return number == chapter.number && Objects.equals(id, chapter.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, title, description);
+        return Objects.hash(id);
     }
 }

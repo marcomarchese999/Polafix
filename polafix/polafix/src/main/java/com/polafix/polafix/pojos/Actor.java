@@ -61,11 +61,11 @@ public class Actor {
             return false;
         }
         Actor actor = (Actor) o;
-        return Objects.equals(name, actor.name);
+        return Objects.equals(id, actor.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname);
+        return Objects.hash(id);
     }
 }

@@ -158,6 +158,6 @@ public class Serie {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idSerie, name, type, shortDescription, seasons, actors, creators);
+        return Objects.hash(idSerie);
     }
 }
