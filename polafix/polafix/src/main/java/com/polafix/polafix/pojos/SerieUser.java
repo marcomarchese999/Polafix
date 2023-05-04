@@ -11,14 +11,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class SerieUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id")
     private Long id;
     @OneToOne
+    @JsonProperty("serie")  
     private Serie serie;
+    @JsonProperty("title")
+    private String title;
+    @JsonProperty("currentSeason")
     private int currentSeason;
     @ElementCollection
     private List<ChapterSeen> userChapters;
@@ -29,16 +36,42 @@ public class SerieUser {
         this.serie = serie;
         this.currentSeason = 1;
         this.userChapters = new ArrayList<ChapterSeen>();
+        this.setTitle(serie.getName());
+        
 
         List<Season> seasons = this.serie.getSeasons();
         for(int i=0; i<seasons.size(); i++){
             Season season = seasons.get(i);
             List<Chapter> chapters = seasons.get(i).getChapters();
             for(int j=0; j<chapters.size(); j++){
-                ChapterSeen c = new ChapterSeen(ChapterState.NOTSEEN, season.getNumber(), chapters.get(j).getNumber());
+                ChapterSeen c = new ChapterSeen(ChapterState.NOTSEEN, season.getNumber(), chapters.get(j).getNumber(), chapters.get(j).getTitle(), chapters.get(j).getDescription());
                 userChapters.add(c);
             }
         }
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setSerie(Serie serie) {
+        this.serie = serie;
+    }
+    public void setUserChapters(List<ChapterSeen> userChapters) {
+        this.userChapters = userChapters;
     }
 
     public Serie getSerie() {
@@ -91,6 +124,15 @@ public class SerieUser {
         List<ChapterSeen> chapters = this.getUserChapters();
         ChapterSeen cs = findChapter(chapters, season, chapter);
         cs.setState(ChapterState.SEEN);
+    }
+
+    public List<ChapterSeen> getChapterForSeason(int season){ 
+        List<ChapterSeen> lista = new ArrayList<>(); 
+        for(ChapterSeen cs : this.getUserChapters()){ 
+            if(cs.getNumberSeason()==season) 
+                lista.add(cs); 
+        } 
+        return lista; 
     }
 
     @Override

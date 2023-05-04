@@ -163,8 +163,8 @@ public class test {
         assertEquals(1, utente.getStarted().size());
         assertEquals(0, utente.getInlist().size());
         Charge expected = new Charge(LocalDate.now(), lost.getName(), 1, 1, lost.getType().getprice());
-        assertEquals(1, utente.getLastBalance().getAllCharges().size());
-        assertEquals(expected, utente.getLastBalance().getAllCharges().get(0));
+        assertEquals(1, utente.getLastBalance(utente.getBalances()).getAllCharges().size());
+        assertEquals(expected, utente.getLastBalance(utente.getBalances()).getAllCharges().get(0));
         assertEquals(lost_user.getSerie(), utente.getStarted().get(0).getSerie());
         
         assertEquals(lost_user, utente.viewSerieUser(utente.getStarted(), "Lost"));
@@ -182,7 +182,7 @@ public class test {
         //Verify started and inlist are empty
         assertEquals(0, utente.getStarted().size());
         assertEquals(0, utente.getInlist().size());
-        assertEquals(1.50, utente.getLastBalance().getAmount());
+        assertEquals(1.50, utente.getLastBalance(utente.getBalances()).getAmount());
     }
 
     @Test

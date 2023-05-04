@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class Serie {
@@ -23,6 +25,7 @@ public class Serie {
     private Type type;
     private String shortDescription;
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Season> seasons;
     @ManyToMany
     private List<Actor> actors;

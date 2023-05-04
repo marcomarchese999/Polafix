@@ -10,31 +10,48 @@ import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 //import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class User {
 
     @Id
+    @JsonProperty("email")
     private String email;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("surname")
     private String surname;
+    @JsonProperty("type")
     private Subscription type;
+    @JsonIgnore 
     private Date dateOfBirth;
-    private String IBAN;
+    @JsonIgnore 
+    private String iban;
+    @JsonIgnore 
     private String password;
-    @OneToMany
-    //(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
+    @OrderColumn(name = "index")
+    @JsonProperty("ended")
     private List<SerieUser> ended;
-    @OneToMany
-    //(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
+    @OrderColumn(name = "index")
+    @JsonProperty("started")
     private List<SerieUser> started;
-    @OneToMany
-    //(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OrderColumn(name = "index")
+    @JsonProperty("inlist")
     private List<SerieUser> inlist;
     @OneToMany(cascade = CascadeType.ALL)
+    @OrderColumn(name = "index")
+    @JsonIgnore
     private List<Balance> balances;
 
 
@@ -45,7 +62,7 @@ public class User {
         this.surname=surname;
         this.email=email;
         this.type=type;
-        this.IBAN=IBAN;
+        this.iban=IBAN;
         this.dateOfBirth = dateOfBirth;
         
         
@@ -116,11 +133,11 @@ public class User {
     }
 
     public String getIBAN() {
-        return IBAN;
+        return iban;
     }
 
     public void setIBAN(String IBAN) {
-        this.IBAN = IBAN;
+        this.iban = IBAN;
     }
 
     public List<SerieUser> getEnded() {
@@ -144,7 +161,7 @@ public class User {
         return balance;
     }
 
-    public Balance getLastBalance(){
+    public Balance getLastBalance(List<Balance> balances){
         return balances.get(balances.size()-1);
     }
 
@@ -153,16 +170,14 @@ public class User {
         LocalDate date = LocalDate.now();
         Month month = date.getMonth();
         int year = date.getYear();
+        Balance lastBalance = getLastBalance(this.balances);
         Charge charge = new Charge(date, serie.getSerie().getName(), season, chapter, serie.getSerie().getType().getprice());
-
-        if(this.getLastBalance().getMonth().equals(month) && this.getLastBalance().getYear().getValue() == year){
-            this.getLastBalance().addCharge(charge);
+        if(lastBalance.getMonth().equals(month) && year==lastBalance.getYear().getValue()){
+            lastBalance.addCharge(charge);
+        }else{
+            Balance balance = addBalance(month, Year.of(year));
+            balance.addCharge(charge);
         }
-        else{
-            Balance newBalance = addBalance(month, Year.of(year));
-            newBalance.addCharge(charge);
-        }
-        
     } 
 
     public Balance getHistoryBalance(Month month, Year year){

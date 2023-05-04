@@ -4,19 +4,30 @@ import java.util.Objects;
 
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Embeddable
 public class ChapterSeen {
     
+    @JsonProperty("state")
     private ChapterState state;
+    @JsonProperty("numSeason")
     private int numberSeason;
+    @JsonProperty("numChapter")
     private int numberChapter;
+    @JsonProperty("title")
+    private String title;
+    @JsonProperty("description")
+    private String description;
 
     public ChapterSeen() {}
 
-    public ChapterSeen(ChapterState state, int numberSeason, int numberChapter) {
+    public ChapterSeen(ChapterState state, int numberSeason, int numberChapter, String title, String description) {
         this.state = state;
         this.numberSeason = numberSeason;
         this.numberChapter = numberChapter;
+        this.title=title;
+        this.description = description;
     }
 
     public int getNumberSeason() {
@@ -41,6 +52,22 @@ public class ChapterSeen {
     }
     public void setState(ChapterState state) {
         this.state = state;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

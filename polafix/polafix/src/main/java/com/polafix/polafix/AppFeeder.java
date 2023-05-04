@@ -138,8 +138,8 @@ public class AppFeeder implements CommandLineRunner{
          //-------------------SEIRE REPOSITORY-----------------------------------------------------------------
         
          System.out.println("--------------------------TEST REPOSITORY SERIE-----------------------------------");
-         Serie rotten = sr.findByName("Rotten");
-         System.out.println(rotten.getName());
+         List<Serie> rotten = sr.findByName("Rotten");
+         System.out.println(rotten.get(0).getName());
          //Season s1 = sr.findByTitleAndNumber("Rotten1", 1);
          //System.out.println(s1.getTitle());
          //System.out.println(rotten.getChapter(s1, 3).getTitle());
