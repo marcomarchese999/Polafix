@@ -1,0 +1,37 @@
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous">
+  </head>
+
+
+<div class="spacer"></div>
+
+<div class="on-top">
+    <button class="freccia" (click)="previousSeason()">
+        <i class="fas fa-arrow-left"></i></button>
+    <h2 class="title">{{title}} - Temporada {{season}}</h2>
+    <button class="freccia" (click)="nextSeason()">
+        <i class="fas fa-arrow-right"></i></button>
+</div>
+
+
+<div class="type">{{type}}</div>
+
+<div class="spacer"></div>
+
+<div *ngIf="error" class="error-message">{{ errorMessage }}</div>
+
+<div class="chapters">
+
+    <ul *ngFor="let chapter of listChapters;">
+        <div class="chapter" *ngIf="chapter.numberSeason === season">
+            <span class="num">E.{{ chapter.numberChapter }}.</span>
+            <p class="title" (click)="toggleDetails(chapter.title)">{{ chapter.title }}</p>
+            <button class="button" (click)="addChapter(chapter.numberChapter)">Ver</button>
+            <span class="state">{{ chapter.state }}</span>
+        </div>
+        <div class="details" *ngIf="chapter.showDetails">
+            <span>{{chapter.description}}</span>
+            <button class="X" (click)="toggleDetails(chapter.title)"> X </button>
+        </div>
+    </ul>
+</div>

@@ -1,0 +1,44 @@
+.title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.type{
+    position: absolute;
+    right: 10px;
+    border: 1 solid gray;
+    background-color: gray;
+    color: white;
+    border-radius: 5px;
+}
+
+.chapter{
+    display: flex;
+    align-items: center;
+}
+
+.num, .title, .button, .state, .freccia {
+    margin-right: 20px;
+  }
+
+.details{
+    height: 15px;
+}
+
+.X{
+    position: relative;
+    right: 0px;
+    top: 0px;
+    margin-left: 30px;
+}
+
+.on-top {
+    display: flex;
+    align-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }

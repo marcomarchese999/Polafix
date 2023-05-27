@@ -1,0 +1,24 @@
+.start-section{
+    flex-grow: 1;
+    text-align: center;
+}
+
+.image{
+    margin-right: 10px;
+    width:100px;
+    height:100px;
+}
+
+.spacer {
+   height: 20px;
+  }
+
+.title{
+    display: flex;
+    align-items: center;
+}
+/*
+Copyright Google LLC. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at https://angular.io/license
+*/

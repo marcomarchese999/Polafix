@@ -1,0 +1,52 @@
+.on-top {
+    display: flex;
+    align-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .spacer{
+    height: 50px;
+  }
+
+  .freccia, .name, .season, .title, .price, .date{
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+  
+  .charges{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.total {
+  margin-top: 10px;
+  margin-right: 250px;
+  text-align: center;
+  border: 1 solid gray;
+  background-color: gray;
+  margin-left: 550px;
+  color: white;
+  border-radius: 5px;
+}
+
+.amount{
+  margin-top: 10px;
+  float: right;
+}
+
+.icon-button {
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.icon-button i {
+    margin-right: 5px;
+}

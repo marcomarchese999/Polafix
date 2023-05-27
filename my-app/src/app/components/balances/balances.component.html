@@ -1,0 +1,60 @@
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous">
+</head>
+
+
+<div class="spacer"></div>
+
+<div class="on-top">
+    <button class="freccia" (click)="previousBalance()">
+      <i class="fas fa-arrow-left"></i></button>
+    <h2 class="title">{{mese}} {{anno}}</h2>
+    <button class="freccia" (click)="nextBalance()">
+      <i class="fas fa-arrow-right"></i></button>
+</div>
+
+<div class="spacer"></div>
+
+<div *ngIf="error" class="error-message">{{ errorMessage }}</div>
+
+<div class="container">
+    <table class="charges">
+      <head>
+          <style>
+              table {
+                  width: 100%;
+                  border-collapse: collapse;
+              }
+              
+              th, td {
+                  padding: 8px;
+                  text-align: left;
+                  border-bottom: 1px solid #ddd;
+              }
+              
+              th {
+                  background-color: #f2f2f2;
+              }
+          </style>
+        </head>
+      <body>
+        <tr>
+          <th class="date">Fecha</th>
+          <th class="name">Serie</th>
+          <th class="season">Episodio</th>
+          <th  class="price">Precio</th>
+        </tr>
+        <tr *ngFor="let c of charges;">
+          <td class="date">{{c.date}}</td>
+          <td class="name">{{c.name}}</td>
+          <td class="season">{{c.season}}x{{c.number}}</td>
+          <td class="price">{{c.price}}</td>
+        </tr>
+      </body>
+    </table>
+  </div>
+  
+
+<div class="spacer"></div>
+<h2 class="amount">  {{amount}} € </h2>
+<h2 class="total">  TOTAL   </h2>

@@ -1,0 +1,42 @@
+.inlist{
+  position: relative;
+  margin-top: 10px;
+  background-color: azure;
+  border:  1px solid black;
+  border-radius: 10px;
+  height: 100px;
+}
+
+.started{
+  position: relative;
+  margin-top: 10px;
+  background-color: azure;
+  border:  1px solid black;
+  height: 100px;
+  border-radius: 10px;
+}
+
+.ended{
+  position: relative;
+  margin-top: 10px;
+  background-color: azure;
+  border:  1px solid black;
+  height: 100px;
+  border-radius: 10px;
+}
+
+.spacer{
+  height: 50px;
+}
+
+.advertising{
+  border-radius: 10px;
+  border:  1px solid black;
+  margin-bottom: 20px;
+  background-color: pink;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

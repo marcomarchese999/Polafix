@@ -1,0 +1,14 @@
+<div class="spacer"></div>
+<div class="title">
+    <img class="image" src="assets/logo.jpg">
+    <h1 class="start-section">Bienvenido {{name}} {{surname}}</h1>
+</div>
+<div class="spacer"></div>
+<div class="spacer"></div>
+
+
+<a [routerLink]="['Initio/' + username]"> Initio </a>
+<a [routerLink]="['AgregarSerie/' + username]"> AgregarSerie </a>
+<a [routerLink]="['VerCargos/' + username]"> VerCargos </a>
+
+<router-outlet></router-outlet>

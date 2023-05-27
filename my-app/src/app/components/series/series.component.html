@@ -1,0 +1,48 @@
+<div class="spacer"></div>
+
+<div *ngIf="error" class="error-message">{{ errorMessage }}</div>
+
+
+<div class="button-section">
+  <ul>
+    <li *ngFor="let letter of alphabet">
+      <button (click)="handleClick(letter)">
+        {{ letter }}
+      </button>
+    </li>
+  </ul>
+  <div class="spacer"></div>
+  <div class="search-section">
+    <div class="search-container">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search"
+        class="search-input"
+      />
+      <button class="search-button" (click)="handleSearch()">Search</button>
+    </div>
+  </div>
+</div>
+
+<div *ngFor="let serie of serieList">
+  <div class="serie">
+    <h2 (click)="toggleDetails(serie.name)">{{ serie.name }}</h2>
+    <button class='agregar-button' (click)="addToCart(serie.idSerie)">Agregar</button>
+  </div>
+  <div class="serie-details" *ngIf="serie.showDetails">
+    <ul class="details">
+    <li>
+      <em class="titoli">Descrizione breve:</em>
+      <p>{{ serie.shortDescription }}</p>
+      <em class="titoli">Attori:</em>
+      <p>{{ serie.actors }}</p>
+      <em class="titoli">Creatori:</em>
+      <p> {{ serie.creators }}</p>
+    </li>
+    </ul>
+    <button (click)="toggleDetails(serie.name)">X</button>
+  </div>
+</div>
+
+

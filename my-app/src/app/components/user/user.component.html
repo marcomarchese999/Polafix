@@ -1,0 +1,44 @@
+<div class="spacer"></div>
+
+<div *ngIf="error" class="error-message">{{ errorMessage }}</div>
+
+<div>
+<p>Empezadas</p>
+<div class="started">
+    <ul *ngFor="let serie of started">
+          <span>
+          <p (click)="getSerieUserInlist(serie)">
+            {{ serie.title }}
+          </p>
+          </span>
+      </ul>
+</div>
+<div class="spacer"></div>
+
+<p>Pendientes</p>
+<div class="inlist">
+    <ul *ngFor="let serie of inlist">
+        <span>
+        <p (click)="getSerieUserInlist(serie)">
+          {{ serie.title }}
+        </p>
+      </span>
+    </ul>
+</div>
+<div class="spacer"></div>
+
+<p>Terminadas</p>
+<div class="ended">
+    <ul *ngFor="let serie of ended">
+          <span>
+          <p (click)="getSerieUserInlist(serie)">
+            {{ serie.title }}
+          </p>
+        </span>
+      </ul>
+</div>
+<div class="spacer"></div>
+
+<div class="advertising">BANNER PUBBLICITARIO</div>
+
+</div>
