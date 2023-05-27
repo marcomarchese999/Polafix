@@ -4,12 +4,17 @@ import java.time.Month;
 import java.time.Year;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.polafix.polafix.pojos.*;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/users")
 public class UserController {
 
@@ -20,15 +25,22 @@ public class UserController {
     private SerieService serieService;
 
 //----------------------------------------------USER-------------------------------------------------------------
-
+/* 
     @GetMapping("")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
-
+*/
     @GetMapping("/{email}")
-    public User getUserById(@PathVariable String email) {
-        return userService.getUserById(email);
+    @JsonView({Views.UserDescription.class})
+    public ResponseEntity<User> getUserById(@PathVariable String email) {
+        User existingUser = userService.getUserById(email);
+        if(existingUser != null){
+            return ResponseEntity.ok(existingUser);
+        }
+        else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("")
@@ -37,6 +49,8 @@ public class UserController {
     }
 
     @PutMapping("/{email}")
+    @Transactional
+    @JsonView({Views.UserDescription.class})
     public User updateUser(@PathVariable String email, @RequestBody User user) {
         return userService.updateUser(email, user);
     }
@@ -48,56 +62,7 @@ public class UserController {
 
  //----------------------------------------------SERIE USER-------------------------------------------------------------
 
-    @GetMapping("/{email}/started")
-    public List<SerieUser> getUserStarted(@PathVariable String email) {
-        User existingUser = userService.getUserById(email);
-        if (existingUser != null) {
-            return existingUser.getStarted();
-        } else {
-            return null;
-        }
-    }
-
-    @GetMapping("/{email}/started/{id}")
-    public SerieUserResponse getSerieUserStarted(@PathVariable String email, @PathVariable Long id, @RequestParam int season) {
-        User existingUser = userService.getUserById(email);
-        if (existingUser != null) {
-            for (SerieUser s : existingUser.getStarted()) {
-                if(s.getId()==(id)){
-                    List<ChapterSeen> lista = s.getChapterForSeason(season);
-                    SerieUserResponse sur = new SerieUserResponse(s.getTitle(), s.getCurrentSeason(), s.getSerie().getType(), lista);
-                    return sur;
-                }
-            }
-        }
-        return null;
-    }
-
-    @GetMapping("/{email}/ended")
-    public List<SerieUser> getUserEnded(@PathVariable String email) {
-        User existingUser = userService.getUserById(email);
-        if (existingUser != null) {
-            return existingUser.getEnded();
-        } else {
-            return null;
-        }
-    }
-
-    @GetMapping("/{email}/ended/{id}")
-    public SerieUserResponse getSerieUserEnded(@PathVariable String email, @PathVariable Long id, @RequestParam int season) {
-        User existingUser = userService.getUserById(email);
-        if (existingUser != null) {
-            for (SerieUser s : existingUser.getEnded()) {
-                if(s.getId()==id){
-                    List<ChapterSeen> lista = s.getChapterForSeason(season);
-                    SerieUserResponse sur = new SerieUserResponse(s.getTitle(), s.getCurrentSeason(), s.getSerie().getType(), lista);
-                    return sur;
-                }
-            }
-        }
-        return null;
-    }
-
+/* 
     @GetMapping("/{email}/inlist")
     public List<SerieUser> getUserInlist(@PathVariable String email) {
         User existingUser = userService.getUserById(email);
@@ -107,98 +72,74 @@ public class UserController {
             return null;
         }
     }
-
-    @GetMapping("/{email}/inlist/{id}")
-    public SerieUserResponse getSerieUserInlist(@PathVariable String email, @PathVariable Long id, @RequestParam int season) {
-        User existingUser = userService.getUserById(email);
-        if (existingUser != null) {
-            for (SerieUser s : existingUser.getInlist()) {
-                if(s.getId()==id){
-                    List<ChapterSeen> lista = s.getChapterForSeason(season);
-                    SerieUserResponse sur = new SerieUserResponse(s.getTitle(), s.getCurrentSeason(), s.getSerie().getType(), lista);
-                    return sur;
-                }
-            }
-        }
-        return null;
+*/
+@GetMapping("/{email}/inlist/{id}") 
+@JsonView ({Views.SerieUserDescription.class}) 
+public ResponseEntity<SerieUser> getSerieUserInlist(@PathVariable String email, @PathVariable Long id, @RequestParam int season) { 
+    User existingUser = userService.getUserById(email); 
+    SerieUser serie = null;
+    if (existingUser != null){
+        serie = userService.getSerieUser(id, existingUser);
+        return ResponseEntity.ok(serie);
+    } else{
+        return ResponseEntity.badRequest().build();
     }
+}
 
 //-----------------------------------------------BALANCES-------------------------------------------------------
     @GetMapping("/{email}/balances")
-    public Balance getBalances(@PathVariable String email) {
+    public ResponseEntity<Balance> getBalances(@PathVariable String email) {
         User existingUser = userService.getUserById(email);
         if (existingUser != null) {
-            return existingUser.getLastBalance(existingUser.getBalances());
+            Balance b = existingUser.getLastBalance(existingUser.getBalances());
+            return ResponseEntity.ok(b);
         } else {
-            return null;
+            return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/{email}/balances/{year}/{month}")
-    public Balance getBalances(@PathVariable String email, @PathVariable Year year, @PathVariable Month month) {
+    public ResponseEntity<Balance> getBalances(@PathVariable String email, @PathVariable Year year, @PathVariable Month month) {
         User existingUser = userService.getUserById(email);
         if (existingUser != null) {
-            return existingUser.getHistoryBalance(month, year);
+            Balance b = existingUser.getHistoryBalance(month, year);
+            return ResponseEntity.ok(b);
         } else {
-            return null;
+            return ResponseEntity.notFound().build();
         }
     }
 
 //----------------------------------------------AGREGAR SERIE----------------------------------------------------
 
     @PutMapping("/{email}/inlist")
-    public User addSerie(@PathVariable String email, @RequestParam Long id){
+    @Transactional
+    public ResponseEntity<List<SerieUser>> addSerie(@PathVariable String email, @RequestParam Long id){
         Serie serie = serieService.getSerieById(id);
         User existingUser = userService.getUserById(email);
             if (existingUser != null) {
                 existingUser.addSerie(serie);
-                return userService.saveUser(existingUser);
+                userService.saveUser(existingUser);
+                List<SerieUser> lsu = existingUser.getInlist();
+                return ResponseEntity.ok(lsu);
             } else {
-                return null;
+                return ResponseEntity.badRequest().build();
         }
     }
 
 //----------------------------------------------VER CHAPTER-------------------------------------------------------
 
-    @PutMapping("/{email}/inlist/{id}/{season}")
-    public User seeChapterFromInlist(@PathVariable String email, @PathVariable Long id, @PathVariable int season, @RequestParam int chapter){
-        User existingUser = userService.getUserById(email);
-        if (existingUser != null) {
-            for (SerieUser su : existingUser.getInlist()) {
-                if(su.getId()==id){
-                    existingUser.selectChapter(su,season,chapter);
-                    return userService.saveUser(existingUser);
-                }
-            }
-            return userService.saveUser(existingUser);
-        } else return null;
-    }
-
-    @PutMapping("/{email}/started/{id}/{season}")
-    public User seeChapterFromStarted(@PathVariable String email, @PathVariable Long id, @PathVariable int season, @RequestParam int chapter){
-        User existingUser = userService.getUserById(email);
-        if (existingUser != null) {
-            for (SerieUser su : existingUser.getStarted()) {
-                if(su.getId()==id){
-                    existingUser.selectChapter(su,season,chapter);
-                    return userService.saveUser(existingUser);
-                }
-            }
-            return userService.saveUser(existingUser);
-        } else return null;
-    }
-
-    @PutMapping("/{email}/ended/{id}/{season}")
-    public User seeChapterFromEnded(@PathVariable String email, @PathVariable Long id, @PathVariable int season, @RequestParam int chapter){
-        User existingUser = userService.getUserById(email);
-        if (existingUser != null) {
-            for (SerieUser su : existingUser.getEnded()) {
-                if(su.getId()==id){
-                    existingUser.selectChapter(su,season,chapter);
-                    return userService.saveUser(existingUser);
-                }
-            }
-            return userService.saveUser(existingUser);
-        } else return null;
+    @PutMapping("/{email}/inlist/{id}/{season}") 
+    @Transactional 
+    public ResponseEntity<SerieUser> seeChapterFromInlist(@PathVariable String email, @PathVariable Long id, @PathVariable int season, @RequestParam int chapter){ 
+        User existingUser = userService.getUserById(email); 
+        SerieUser serie = null; 
+        if (existingUser != null) { 
+            SerieUser su = userService.getSerieUser(id, existingUser);
+            existingUser.selectChapter(su,season,chapter); 
+            userService.saveUser(existingUser); 
+            serie = su; 
+            return ResponseEntity.ok(serie);
+            } 
+            return ResponseEntity.badRequest().build();
     }
 }

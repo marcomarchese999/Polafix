@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.polafix.polafix.controller.Views;
+
 
 @Entity
 public class Actor {
@@ -17,7 +20,9 @@ public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @JsonView ({Views.SerieDescription.class})
     private String name;
+    @JsonView ({Views.SerieDescription.class})
     private String surname;
     @ManyToMany(mappedBy = "actors")
     public List<Serie> series;

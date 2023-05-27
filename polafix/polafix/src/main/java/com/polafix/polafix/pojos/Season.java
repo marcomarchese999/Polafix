@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 @Entity
 public class Season {
@@ -24,7 +24,6 @@ public class Season {
     private int number;
     private String title;
     @OneToMany(cascade = CascadeType.ALL)
-    @JsonProperty("chapters")
     private List<Chapter> chapters;
 
     public Season(String title, int number) {

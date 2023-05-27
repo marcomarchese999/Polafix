@@ -11,27 +11,25 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-//import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.polafix.polafix.controller.Views;
 
 @Entity
 public class User {
 
     @Id
-    @JsonProperty("email")
+    @JsonView ({Views.UserDescription.class})
     private String email;
-    @JsonProperty("name")
+    @JsonView ({Views.UserDescription.class})
     private String name;
-    @JsonProperty("surname")
+    @JsonView ({Views.UserDescription.class})
     private String surname;
-    @JsonProperty("type")
     private Subscription type;
-    @JsonIgnore 
     private Date dateOfBirth;
     @JsonIgnore 
     private String iban;
@@ -39,19 +37,18 @@ public class User {
     private String password;
     @OneToMany(fetch = FetchType.EAGER)
     @OrderColumn(name = "index")
-    @JsonProperty("ended")
+    @JsonView ({Views.UserDescription.class})
     private List<SerieUser> ended;
     @OneToMany(fetch = FetchType.EAGER)
     @OrderColumn(name = "index")
-    @JsonProperty("started")
+    @JsonView ({Views.UserDescription.class})
     private List<SerieUser> started;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @OrderColumn(name = "index")
-    @JsonProperty("inlist")
+    @JsonView ({Views.UserDescription.class})
     private List<SerieUser> inlist;
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn(name = "index")
-    @JsonIgnore
     private List<Balance> balances;
 
 
@@ -217,13 +214,13 @@ public class User {
         }
     }
 
-    private SerieUser getSerieUser(List<SerieUser> lista, SerieUser serie){
-        for(int i=0; i<lista.size(); i++){
-            if(lista.get(i).getSerie().equals(serie.getSerie())){
-                return lista.get(i);
+    public SerieUser getSerieUser(List<SerieUser> lista, Long id){
+        for(SerieUser su : lista){
+            if(su.getId()==id){
+                return su;
             }
         }
-        return null; // sistema!!!
+        return null; 
     }
 
     private boolean isLastChapter(SerieUser serie, ChapterSeen chapter){ 
@@ -231,53 +228,33 @@ public class User {
     }
 
     public void selectChapter(SerieUser s, int season, int chapter){ 
+        ChapterSeen c = s.findChapter(s.getUserChapters(), season, chapter);
+        s.addChapterSeen(season, chapter); 
+        s.setCurrentSeason(season); 
+        int num_chapters = s.getSerie().getSeason(season).getChapters().size(); 
+        s.setNextSeason(c, num_chapters);
+        this.addCharge(s, season, chapter);  
         if(isInListUser(s, inlist)){ 
-            SerieUser serie = getSerieUser(inlist, s); 
-            ChapterSeen c = serie.findChapter(serie.getUserChapters(), season, chapter); 
-            serie.addChapterSeen(season, chapter); 
-            serie.setCurrentSeason(season); 
-            int num_chapters = serie.getSerie().getSeason(season).getChapters().size(); 
-            serie.setNextSeason(c, num_chapters);
-            this.addCharge(serie, season, chapter); 
-            if(isLastChapter(serie, c)){ 
-                System.out.println(" sono in list vado a ended"); 
-                inlist.remove(serie); 
-                ended.add(serie); 
-                serie.setCurrentSeason(1); 
+            if(isLastChapter(s, c)){  
+                inlist.remove(s); 
+                ended.add(s); 
+                s.setCurrentSeason(1); 
             } 
             else{ 
-                System.out.println(" sono in list vado a started"); 
-                inlist.remove(serie); 
-                started.add(serie);     
+                inlist.remove(s); 
+                started.add(s);     
             }   
         } 
         else{ 
-            if(isInListUser(s, started)){ 
-                SerieUser serie = getSerieUser(started, s); 
-                ChapterSeen c = serie.findChapter(serie.getUserChapters(), season, chapter); 
-                serie.addChapterSeen(season, chapter); 
-                int num_chapters = serie.getSerie().getSeason(season).getChapters().size(); 
-                serie.setNextSeason(c, num_chapters);
-                this.addCharge(serie, season, chapter); 
-                if(isLastChapter(serie, c)){ 
-                    //System.out.print(" sono in started vado a ended"); 
-                    ended.add(serie); 
-                    started.remove(serie); 
-                    serie.setCurrentSeason(1); 
+            if(isInListUser(s, started)){
+                if(isLastChapter(s, c)){ 
+                    ended.add(s);
+                    started.remove(s); 
+                    s.setCurrentSeason(1); 
                 } 
-            } 
-            else{ 
-                SerieUser serie = getSerieUser(ended, s); 
-                ChapterSeen c = serie.findChapter(serie.getUserChapters(), season, chapter);
-                serie.addChapterSeen(season, chapter); 
-                int num_chapters = serie.getSerie().getSeason(season).getChapters().size(); 
-                serie.setNextSeason(c, num_chapters);
-                this.addCharge(serie, season, chapter); 
-                //System.out.print(" sono a ended"); 
             } 
         } 
     }
-
 
 
     public SerieUser viewSerieUser(List<SerieUser> userList, String nameSerie){

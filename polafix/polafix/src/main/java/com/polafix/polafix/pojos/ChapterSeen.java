@@ -4,20 +4,23 @@ import java.util.Objects;
 
 import javax.persistence.Embeddable;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.polafix.polafix.controller.Views;
+
+
 
 @Embeddable
 public class ChapterSeen {
     
-    @JsonProperty("state")
+    @JsonView ({Views.SerieUserDescription.class})
     private ChapterState state;
-    @JsonProperty("numSeason")
+    @JsonView ({Views.SerieUserDescription.class})
     private int numberSeason;
-    @JsonProperty("numChapter")
+    @JsonView ({Views.SerieUserDescription.class})
     private int numberChapter;
-    @JsonProperty("title")
+    @JsonView ({Views.SerieUserDescription.class})
     private String title;
-    @JsonProperty("description")
+    @JsonView ({Views.SerieUserDescription.class})
     private String description;
 
     public ChapterSeen() {}

@@ -11,23 +11,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.polafix.polafix.controller.Views;
+
+
 
 @Entity
 public class SerieUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty("id")
+    @JsonView ({Views.SerieUserDescription.class, Views.UserDescription.class})
     private Long id;
     @OneToOne
-    @JsonProperty("serie")  
+    @JsonView ({Views.SerieUserDescription.class})
     private Serie serie;
-    @JsonProperty("title")
+    @JsonView ({Views.SerieUserDescription.class, Views.UserDescription.class})
     private String title;
-    @JsonProperty("currentSeason")
+    @JsonView ({Views.SerieUserDescription.class, Views.UserDescription.class})
     private int currentSeason;
     @ElementCollection
+    @JsonView ({Views.SerieUserDescription.class})
     private List<ChapterSeen> userChapters;
 
     public SerieUser() {}
@@ -124,15 +128,6 @@ public class SerieUser {
         List<ChapterSeen> chapters = this.getUserChapters();
         ChapterSeen cs = findChapter(chapters, season, chapter);
         cs.setState(ChapterState.SEEN);
-    }
-
-    public List<ChapterSeen> getChapterForSeason(int season){ 
-        List<ChapterSeen> lista = new ArrayList<>(); 
-        for(ChapterSeen cs : this.getUserChapters()){ 
-            if(cs.getNumberSeason()==season) 
-                lista.add(cs); 
-        } 
-        return lista; 
     }
 
     @Override

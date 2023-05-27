@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.polafix.polafix.controller.Views;
+import com.fasterxml.jackson.annotation.JsonView;
+
 
 
 @Entity
@@ -18,7 +21,9 @@ public class Creator {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @JsonView ({Views.SerieDescription.class})
     private String name;
+    @JsonView ({Views.SerieDescription.class})
     private String surname;
     @ManyToMany(mappedBy = "creators")
     private List<Serie> series;

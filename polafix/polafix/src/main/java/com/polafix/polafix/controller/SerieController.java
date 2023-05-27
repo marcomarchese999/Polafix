@@ -3,11 +3,15 @@ package com.polafix.polafix.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.polafix.polafix.pojos.Serie;
 
+
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/series")
 public class SerieController {
 
@@ -15,15 +19,26 @@ public class SerieController {
     private SerieService serieService;
     
     @GetMapping("")
-    public List<Serie> getAllSerie() {
-        return serieService.getAllSerie();
+    @JsonView({Views.SerieDescription.class})
+    public ResponseEntity<List<Serie>> getSerieByName(@RequestParam String name) {
+        List<Serie> l = serieService.getSerieByName(name);
+        if(l!=null){
+            return ResponseEntity.ok(l);
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @GetMapping("/{name}")
-    public List<Serie> getSerieByName(@PathVariable String name) {
-        return serieService.getSerieByName(name);
+    @GetMapping("/{id}")
+    public ResponseEntity<Serie> getSerieById(@PathVariable Long id) {
+        Serie s = serieService.getSerieById(id);
+        if(s!=null){
+            return ResponseEntity.ok(s);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
-
+/* 
     @PostMapping("")
     public Serie createSerie(@RequestBody Serie serie) {
         return serieService.createSerie(serie);
@@ -33,5 +48,5 @@ public class SerieController {
     public boolean deleteSerie(@PathVariable Long id) {
         return serieService.deleteSerie(id);
     }
-
+    */
 }

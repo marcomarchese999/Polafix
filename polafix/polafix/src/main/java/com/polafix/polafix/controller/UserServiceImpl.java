@@ -75,4 +75,27 @@ public class UserServiceImpl implements UserService {
     public User saveUser(User user) {
         return userRepository.save(user);
     }
+
+    private boolean isInList(Long id, List<SerieUser> lista){
+        for(SerieUser s : lista){
+            if(s.getId()==id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override 
+    public SerieUser getSerieUser(Long id, User user){
+        SerieUser serie = null;
+        if(user != null){
+            if(isInList(id, user.getInlist())){
+                serie = user.getSerieUser(user.getInlist(), id);}
+            else if(isInList(id, user.getStarted())){
+                serie = user.getSerieUser(user.getStarted(), id);}
+            else 
+                serie = user.getSerieUser(user.getEnded(), id);
+        }
+        return serie;
+    }
 }

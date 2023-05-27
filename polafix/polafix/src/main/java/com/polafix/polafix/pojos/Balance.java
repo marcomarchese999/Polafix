@@ -12,8 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.Year;
 import java.time.Month;
+
 
 @Entity
 public class Balance {
@@ -74,6 +77,7 @@ public class Balance {
     }
     
 
+    @JsonIgnore
     public List<Charge> getAllCharges() {
         return charges;
     }

@@ -12,7 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.polafix.polafix.controller.Views;
 
 
 @Entity
@@ -20,16 +21,21 @@ public class Serie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView ({Views.SerieDescription.class})
     private Long idSerie;
+    @JsonView ({Views.SerieDescription.class})
     private String name;
+    @JsonView ({Views.SerieUserDescription.class})
     private Type type;
+    @JsonView ({Views.SerieDescription.class})
     private String shortDescription;
     @OneToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Season> seasons;
     @ManyToMany
+    @JsonView ({Views.SerieDescription.class})
     private List<Actor> actors;
     @ManyToMany
+    @JsonView ({Views.SerieDescription.class})
     private List<Creator> creators;
 
     public Serie() {}

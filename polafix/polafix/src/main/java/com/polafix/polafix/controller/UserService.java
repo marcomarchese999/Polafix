@@ -16,4 +16,5 @@ public interface UserService {
     @Transactional
     User saveUser(User user);
     User updateInList(String email, User user);
+    SerieUser getSerieUser(Long id, User user);
 }
