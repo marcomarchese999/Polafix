@@ -1,0 +1,86 @@
+DOMAIN-DRIVEN DESIGN
+
+Clasificacion de los elementos del modelo anterior como Entities, Value Objects o Services.
+
+User -> entity
+La clase User es una entidad en la que se definen todos los atributos y las operaciones del usuario suscrito a Polafix.
+Cada usuario es único y está definido por un conjunto de atributos, ademas, tiene una identidad en la aplicación, de hecho,
+cada usuario tiene un Id único que lo distingue con el que instanciamos objetos de usuario.
+
+Balance -> entity
+Balance representa una entidad porque cada usuario ni tiene una lista. Cada uno es único y depende del mes y del año en que se crea.
+No tendría sentido tener varios balances asociados con el mismo usuario y en la misma fecha.
+Mas, el balance debe ser monitoreado durante la ejecución de la aplicación.
+De hecho, tanto la lista de cargos asociados con un balance como el el atributo saldo son objetos de balance que varían y que deben ser monitoreados.
+
+Charge -> value object
+Charge es un value object, porque es una clase que define los atributos que el usuario ve cuando accede al balance. 
+Además, no es una entidad porque no tiene su propia identidad, y de esta clase solo nos interesan los metorios get(), no hay nada que monitorear.
+No es único porque diferentes usuarios pueden haber visto el mismo capítulo de la misma serie el mismo día.
+Además, si se supone que debes cambiar un cargo de un usuario por el de otro, si los dos cargos son idénticos, no habrá ningún problema a nivel del sistema. 
+
+SerieUser -> entity
+La clase SerieUser es un entity por que es única y tiene su propia identidad con respecto al usuario específico.
+De hecho, no tiene sentido que el mismo usuario tenga la misma serie de usuarios.
+Sin embargo, no es un objeto de valor, ya que también pertenece a una lista de usuarios específica, 
+y si se supone que se intercambia una serieUser con la de otro usuario, por idénticos que sean, podrían pertenecer a diferentes listas. 
+O, de nuevo, podrían tener varios estados de capítulos vistos.
+También queremos monitorear el estado de los capítulos vistos asociados con el usuario.
+
+ChapterSeen -> value object
+ChapterSeen es un value object porque es una clase que define los atributos de un capítulo y el estado (visto o no visto) específico para cada serieUser de cada usuario.
+No es único ya que muchos usuarios pueden tener la misma chapterSeen en sus listas de SerieUser. 
+ 
+Serie -> entity
+Serie es la otra entidad fundamental de Polafix. 
+Define las características de cada serie presente en el catálogo, cada serie es única y tiene su propia identidad.
+No tendría sentido, de hecho, tener dos series iguales en el catálogo de la aplicación.
+Debe ser monitoreada porque con el tiempo se pueden añadir estaciones o episodios.
+
+Season -> entity 
+Cada serie se caracteriza por temporadas y capítulos a los que el usuario accede. 
+La season es una entidad porque tiene su propia identidad y singularidad. 
+No es posible tener dos temposadas iguales asociadas a dos series diferentes.
+Debe ser monitoreada porque con el tiempo se pueden añadir episodios.
+
+Chapter -> entity 
+El Chapter también es una entity, porque representa una parte importante de la aplicación. 
+Cada capítulo está asociado a una temporada y a una serie que definen su identidad y unicidad. 
+No es posible tener dos capitulos iguales asociadas a dos temporadas diferentes.
+
+Actor -> value object
+Actor es un value object, porque representa un atributo de la serie y no es una clase que necesita ser monitoreada, 
+solo nos interesa acceder a él por métodos get().
+
+Creator -> value object
+Creator es un value object, porque representa un atributo de la serie y no es una clase que necesita ser monitoreada, 
+solo nos interesa acceder a él por métodos get().
+
+Subscription -> value object
+Es un value object enumerativo que define el tipo de suscripción de los usuarios suscritos a Polafix.
+
+Type -> value object
+Es un value object enumerativo que define el tipo de serie y el precio asociado. 
+
+ChapterState -> value object
+Es un value object para el Chapter para determinar si el episodio fue visto o no.
+
+
+
+Identificar los aggregates, destacando su aggregate root
+
+•	Aggregate 1: User, Balance, Charge, SerieUser, ChapterSeen
+	o	Aggregate root: User
+•	Aggregate 2: Serie, Season, Chapter
+	o	Aggregate root: Serie
+
+Aggregate 1: La entity user es el aggregate root del primer agregado. 
+De hecho, cada usuario está asociado a un balance y si el usuario se elimina del sistema, el balance asociado a este también se eliminará.
+Del mismo modo, cada usuario está asociado con 3 listas SerieUser, que ya no existirían sin el usuario específico.
+
+Aggregate 2: La relación entre serie, season y chapter pone serie como aggregate root. 
+De hecho, cada capítulo se asocia con una temporada y cada temporada con una serie seria, por lo que al eliminar la serie también desaparecerían los capítulos y las temporadas.
+
+Los objetos de valor enumerativos no se encuentran en los agregados, ya que existen como objetos independientemente de otras entidades. 
+Incluso Actor y Creator no se encuentran en los agregados, ya que al eliminar una serie no se eliminan también los actores y los creadores de esta. 
+Su ciclo de vida no está estrechamente relacionado con la serie.
