@@ -24,6 +24,7 @@ export class UserComponent {
   errorMessage : string = '';
   error : boolean = false;
   tipoLista : string = '';
+  sections : any;
 
   constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) {}
 
@@ -33,20 +34,28 @@ export class UserComponent {
     });
 
     this.userService.getUserById(this.searchEmail)
-      .pipe(
-        catchError((error) => {
-          console.error('Errore durante la chiamata HTTP:', error);
-          return throwError(error);
-        })
-      )
       .subscribe((data: any) => {
         this.user = Object.keys(data).map((key) => {
           return data[key];
         });
         this.user = data;
-        this.inlist = this.user.inlist;
-        this.started = this.user.started;
-        this.ended = this.user.ended;
+        this.sections = [
+          {
+            title: 'Empezadas',
+            class: 'started',
+            series: this.user.started
+          },
+          {
+            title: 'Pendientes',
+            class: 'inlist',
+            series: this.user.inlist
+          },
+          {
+            title: 'Terminadas',
+            class: 'ended',
+            series: this.user.ended
+          }
+        ];
         console.log(this.user);
       },
       (err) => {this.printError()});

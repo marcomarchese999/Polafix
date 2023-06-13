@@ -12,15 +12,15 @@ import com.polafix.polafix.controller.Views;
 @Embeddable
 public class ChapterSeen {
     
-    @JsonView ({Views.SerieUserDescription.class})
+    @JsonView ({Views.SerieUserDescription.class}) 
     private ChapterState state;
-    @JsonView ({Views.SerieUserDescription.class})
+    @JsonView ({Views.SerieUserDescription.class}) 
     private int numberSeason;
-    @JsonView ({Views.SerieUserDescription.class})
+    @JsonView ({Views.SerieUserDescription.class}) 
     private int numberChapter;
-    @JsonView ({Views.SerieUserDescription.class})
+    @JsonView ({Views.SerieUserDescription.class}) 
     private String title;
-    @JsonView ({Views.SerieUserDescription.class})
+    @JsonView ({Views.SerieUserDescription.class}) 
     private String description;
 
     public ChapterSeen() {}

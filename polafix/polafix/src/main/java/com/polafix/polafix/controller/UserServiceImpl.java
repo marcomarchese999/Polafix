@@ -14,13 +14,46 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public User getUserById(String email) {
+       return userRepository.findById(email).orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
     }
 
     @Override
-    public User getUserById(String email) {
-       return userRepository.findById(email).orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    private boolean isInList(Long id, List<SerieUser> lista){
+        for(SerieUser s : lista){
+            if(s.getId()==id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override 
+    public SerieUser getSerieUser(Long id, User user){
+        SerieUser serie = null;
+        if(user != null){
+            if(isInList(id, user.getInlist())){
+                serie = user.getSerieUser(user.getInlist(), id);}
+            else if(isInList(id, user.getStarted())){
+                serie = user.getSerieUser(user.getStarted(), id);}
+            else 
+                serie = user.getSerieUser(user.getEnded(), id);
+        }
+        return serie;
+    }
+
+
+    /* 
+    
+    OPERACIONES PARA EL SISTEMA, NO UTILIZADAS EN LAS INTERFACES DE LA DESCRIPCION DEL SISTEMA
+    
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
@@ -70,32 +103,5 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
-
-    @Override
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
-
-    private boolean isInList(Long id, List<SerieUser> lista){
-        for(SerieUser s : lista){
-            if(s.getId()==id){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override 
-    public SerieUser getSerieUser(Long id, User user){
-        SerieUser serie = null;
-        if(user != null){
-            if(isInList(id, user.getInlist())){
-                serie = user.getSerieUser(user.getInlist(), id);}
-            else if(isInList(id, user.getStarted())){
-                serie = user.getSerieUser(user.getStarted(), id);}
-            else 
-                serie = user.getSerieUser(user.getEnded(), id);
-        }
-        return serie;
-    }
+   */ 
 }

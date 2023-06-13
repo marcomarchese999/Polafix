@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.polafix.polafix.pojos.Serie;
-
-
-@RestController
-@CrossOrigin("*")
-@RequestMapping("/series")
-public class SerieController {
-
-    @Autowired
-    private SerieService serieService;
-    
+ 
+ 
+@RestController 
+@CrossOrigin("*") 
+@RequestMapping("/series") 
+public class SerieController { 
+ 
+    @Autowired 
+    private SerieService serieService; 
+     
     @GetMapping("")
     @JsonView({Views.SerieDescription.class})
     public ResponseEntity<List<Serie>> getSerieByName(@RequestParam String name) {
@@ -38,15 +38,24 @@ public class SerieController {
             return ResponseEntity.notFound().build();
         }
     }
-/* 
-    @PostMapping("")
-    public Serie createSerie(@RequestBody Serie serie) {
-        return serieService.createSerie(serie);
-    }
 
-    @DeleteMapping("/{name}")
-    public boolean deleteSerie(@PathVariable Long id) {
-        return serieService.deleteSerie(id);
+    
+    /*
+    OPERACIONES PARA EL SISTEMA, NO UTILIZADAS EN LAS INTERFACES DE LA DESCRIPCION DEL SISTEMA
+    
+    @GetMapping("") 
+    public List<Serie> getAllSeries() { 
+        return serieService.getAllSeries(); 
     }
-    */
+ 
+    @PostMapping("") 
+    public Serie createSerie(@RequestBody Serie serie) { 
+        return serieService.createSerie(serie); 
+    } 
+ 
+    @DeleteMapping("/{name}") 
+    public boolean deleteSerie(@PathVariable Long id) { 
+        return serieService.deleteSerie(id); 
+    } */ 
 }
+

@@ -3,42 +3,19 @@
 <div *ngIf="error" class="error-message">{{ errorMessage }}</div>
 
 <div>
-<p>Empezadas</p>
-<div class="started">
-    <ul *ngFor="let serie of started">
-          <span>
-          <p (click)="getSerieUserInlist(serie)">
-            {{ serie.title }}
-          </p>
-          </span>
-      </ul>
-</div>
-<div class="spacer"></div>
-
-<p>Pendientes</p>
-<div class="inlist">
-    <ul *ngFor="let serie of inlist">
+  <ng-container *ngFor="let section of sections">
+    <p>{{ section.title }}</p>
+    <div [class]="section.class">
+      <ul *ngFor="let serie of section.series">
         <span>
-        <p (click)="getSerieUserInlist(serie)">
-          {{ serie.title }}
-        </p>
-      </span>
-    </ul>
-</div>
-<div class="spacer"></div>
-
-<p>Terminadas</p>
-<div class="ended">
-    <ul *ngFor="let serie of ended">
-          <span>
           <p (click)="getSerieUserInlist(serie)">
             {{ serie.title }}
           </p>
         </span>
       </ul>
-</div>
-<div class="spacer"></div>
+    </div>
+    <div class="spacer"></div>
+  </ng-container>
 
-<div class="advertising">BANNER PUBBLICITARIO</div>
-
+  <div class="advertising">BANNER PUBBLICITARIO</div>
 </div>

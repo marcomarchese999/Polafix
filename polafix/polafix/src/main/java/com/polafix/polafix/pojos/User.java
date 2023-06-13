@@ -22,35 +22,34 @@ import com.polafix.polafix.controller.Views;
 @Entity
 public class User {
 
-    @Id
-    @JsonView ({Views.UserDescription.class})
-    private String email;
-    @JsonView ({Views.UserDescription.class})
-    private String name;
-    @JsonView ({Views.UserDescription.class})
-    private String surname;
-    private Subscription type;
-    private Date dateOfBirth;
-    @JsonIgnore 
-    private String iban;
-    @JsonIgnore 
-    private String password;
-    @OneToMany(fetch = FetchType.EAGER)
-    @OrderColumn(name = "index")
-    @JsonView ({Views.UserDescription.class})
-    private List<SerieUser> ended;
-    @OneToMany(fetch = FetchType.EAGER)
-    @OrderColumn(name = "index")
-    @JsonView ({Views.UserDescription.class})
-    private List<SerieUser> started;
+    @Id 
+    @JsonView ({Views.UserDescription.class}) 
+    private String email; 
+    @JsonView ({Views.UserDescription.class}) 
+    private String name; 
+    @JsonView ({Views.UserDescription.class}) 
+    private String surname; 
+    private Subscription type;   
+    private Date dateOfBirth; 
+    @JsonIgnore  
+    private String iban; 
+    @JsonIgnore  
+    private String password; 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) 
+    @OrderColumn(name = "index") 
+    @JsonView ({Views.UserDescription.class}) 
+    private List<SerieUser> ended; 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @OrderColumn(name = "index")
-    @JsonView ({Views.UserDescription.class})
-    private List<SerieUser> inlist;
-    @OneToMany(cascade = CascadeType.ALL)
-    @OrderColumn(name = "index")
+    @OrderColumn(name = "index") 
+    @JsonView ({Views.UserDescription.class}) 
+    private List<SerieUser> started; 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) 
+    @OrderColumn(name = "index") 
+    @JsonView ({Views.UserDescription.class}) 
+    private List<SerieUser> inlist; 
+    @OneToMany(cascade = CascadeType.ALL) 
+    @OrderColumn(name = "index") 
     private List<Balance> balances;
-
 
     public User() {}
 
@@ -149,8 +148,9 @@ public class User {
         return inlist;
     }
 
-/////////////////////////
+//--------------------------------------------------------------------------------------------------//
 
+    //Potria ser private, es public para el test initial
     public Balance addBalance(Month month, Year year) {
         float saldo = 0;
         Balance balance = new Balance(saldo, month, year);
@@ -256,7 +256,7 @@ public class User {
         } 
     }
 
-
+    //Para el test initial
     public SerieUser viewSerieUser(List<SerieUser> userList, String nameSerie){
         for (SerieUser serieUtente : userList) {
             if(serieUtente.getSerie().getName().equals(nameSerie))

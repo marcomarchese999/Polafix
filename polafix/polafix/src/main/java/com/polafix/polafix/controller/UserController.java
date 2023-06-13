@@ -25,12 +25,7 @@ public class UserController {
     private SerieService serieService;
 
 //----------------------------------------------USER-------------------------------------------------------------
-/* 
-    @GetMapping("")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-*/
+
     @GetMapping("/{email}")
     @JsonView({Views.UserDescription.class})
     public ResponseEntity<User> getUserById(@PathVariable String email) {
@@ -43,36 +38,9 @@ public class UserController {
         }
     }
 
-    @PostMapping("")
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
-    }
-
-    @PutMapping("/{email}")
-    @Transactional
-    @JsonView({Views.UserDescription.class})
-    public User updateUser(@PathVariable String email, @RequestBody User user) {
-        return userService.updateUser(email, user);
-    }
-
-    @DeleteMapping("/{email}")
-    public boolean deleteUser(@PathVariable String email) {
-        return userService.deleteUser(email);
-    }
-
  //----------------------------------------------SERIE USER-------------------------------------------------------------
 
-/* 
-    @GetMapping("/{email}/inlist")
-    public List<SerieUser> getUserInlist(@PathVariable String email) {
-        User existingUser = userService.getUserById(email);
-        if (existingUser != null) {
-            return existingUser.getInlist();
-        } else {
-            return null;
-        }
-    }
-*/
+
 @GetMapping("/{email}/inlist/{id}") 
 @JsonView ({Views.SerieUserDescription.class}) 
 public ResponseEntity<SerieUser> getSerieUserInlist(@PathVariable String email, @PathVariable Long id, @RequestParam int season) { 
@@ -82,7 +50,7 @@ public ResponseEntity<SerieUser> getSerieUserInlist(@PathVariable String email, 
         serie = userService.getSerieUser(id, existingUser);
         return ResponseEntity.ok(serie);
     } else{
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.notFound().build();
     }
 }
 
@@ -128,18 +96,43 @@ public ResponseEntity<SerieUser> getSerieUserInlist(@PathVariable String email, 
 
 //----------------------------------------------VER CHAPTER-------------------------------------------------------
 
-    @PutMapping("/{email}/inlist/{id}/{season}") 
-    @Transactional 
-    public ResponseEntity<SerieUser> seeChapterFromInlist(@PathVariable String email, @PathVariable Long id, @PathVariable int season, @RequestParam int chapter){ 
-        User existingUser = userService.getUserById(email); 
-        SerieUser serie = null; 
+    @PutMapping("/{email}/inlist/{id}/{season}")
+    @Transactional
+    public ResponseEntity<SerieUser> seeChapterFromInlist(@PathVariable String email, @PathVariable Long id, @PathVariable int season, @RequestParam int chapter){
+        User existingUser = userService.getUserById(email);
+        SerieUser serie = null;
         if (existingUser != null) { 
             SerieUser su = userService.getSerieUser(id, existingUser);
             existingUser.selectChapter(su,season,chapter); 
             userService.saveUser(existingUser); 
             serie = su; 
             return ResponseEntity.ok(serie);
-            } 
-            return ResponseEntity.badRequest().build();
+        } else return ResponseEntity.badRequest().build();
     }
+
+    /* 
+    OPERACIONES PARA EL SISTEMA, NO UTILIZADAS EN LAS INTERFACES DE LA DESCRIPCION DEL SISTEMA:
+
+    @GetMapping("")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @PostMapping("")
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
+    }
+
+    @PutMapping("/{email}")
+    @Transactional
+    @JsonView({Views.UserDescription.class})
+    public User updateUser(@PathVariable String email, @RequestBody User user) {
+        return userService.updateUser(email, user);
+    }
+
+    @DeleteMapping("/{email}")
+    public boolean deleteUser(@PathVariable String email) {
+        return userService.deleteUser(email);
+    }
+*/
 }

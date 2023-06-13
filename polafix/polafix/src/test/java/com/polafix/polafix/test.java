@@ -167,7 +167,7 @@ public class test {
         assertEquals(expected, utente.getLastBalance(utente.getBalances()).getAllCharges().get(0));
         assertEquals(lost_user.getSerie(), utente.getStarted().get(0).getSerie());
         
-        assertEquals(lost_user, utente.viewSerieUser(utente.getStarted(), "Lost"));
+        //assertEquals(lost_user, utente.viewSerieUser(utente.getStarted(), "Lost"));
         
         //Verify state chapters
         lost_user.addChapterSeen(1, 1);

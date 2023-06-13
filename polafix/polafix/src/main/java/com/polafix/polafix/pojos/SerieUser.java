@@ -15,23 +15,22 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.polafix.polafix.controller.Views;
 
 
-
 @Entity
 public class SerieUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView ({Views.SerieUserDescription.class, Views.UserDescription.class})
-    private Long id;
-    @OneToOne
-    @JsonView ({Views.SerieUserDescription.class})
-    private Serie serie;
-    @JsonView ({Views.SerieUserDescription.class, Views.UserDescription.class})
-    private String title;
-    @JsonView ({Views.SerieUserDescription.class, Views.UserDescription.class})
-    private int currentSeason;
-    @ElementCollection
-    @JsonView ({Views.SerieUserDescription.class})
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @JsonView ({Views.SerieUserDescription.class, Views.UserDescription.class}) 
+    private Long id; 
+    @OneToOne 
+    @JsonView ({Views.SerieUserDescription.class}) 
+    private Serie serie; 
+    @JsonView ({Views.SerieUserDescription.class, Views.UserDescription.class}) 
+    private String title; 
+    @JsonView ({Views.SerieUserDescription.class, Views.UserDescription.class}) 
+    private int currentSeason; 
+    @ElementCollection 
+    @JsonView ({Views.SerieUserDescription.class}) 
     private List<ChapterSeen> userChapters;
 
     public SerieUser() {}
@@ -44,11 +43,10 @@ public class SerieUser {
         
 
         List<Season> seasons = this.serie.getSeasons();
-        for(int i=0; i<seasons.size(); i++){
-            Season season = seasons.get(i);
-            List<Chapter> chapters = seasons.get(i).getChapters();
-            for(int j=0; j<chapters.size(); j++){
-                ChapterSeen c = new ChapterSeen(ChapterState.NOTSEEN, season.getNumber(), chapters.get(j).getNumber(), chapters.get(j).getTitle(), chapters.get(j).getDescription());
+        for(Season season : seasons){
+            List<Chapter> chapters = season.getChapters();
+            for(Chapter chapter : chapters){
+                ChapterSeen c = new ChapterSeen(ChapterState.NOTSEEN, season.getNumber(), chapter.getNumber(), chapter.getTitle(), chapter.getDescription());
                 userChapters.add(c);
             }
         }
@@ -114,12 +112,11 @@ public class SerieUser {
 
     public ChapterSeen findChapter(List<ChapterSeen> chapters, int numSeason, int numChapter){
         ChapterSeen cs = null;
-        for(int i=0; i<chapters.size(); i++){
-            cs = chapters.get(i);
-            int season = chapters.get(i).getNumberSeason();
-            int chap = chapters.get(i).getNumberChapter();
+        for(ChapterSeen chapter : chapters){
+            int season = chapter.getNumberSeason();
+            int chap = chapter.getNumberChapter();
             if(season==numSeason && chap==numChapter)
-                return cs;
+                cs = chapter;
         }
         return cs;
     }

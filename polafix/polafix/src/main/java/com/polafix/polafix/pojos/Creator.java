@@ -18,14 +18,14 @@ import com.fasterxml.jackson.annotation.JsonView;
 @Entity
 public class Creator {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @JsonView ({Views.SerieDescription.class})
-    private String name;
-    @JsonView ({Views.SerieDescription.class})
-    private String surname;
-    @ManyToMany(mappedBy = "creators")
+    @Id 
+    @GeneratedValue(strategy = GenerationType.AUTO) 
+    private Long id; 
+    @JsonView ({Views.SerieDescription.class}) 
+    private String name; 
+    @JsonView ({Views.SerieDescription.class}) 
+    private String surname; 
+    @ManyToMany(mappedBy = "creators") 
     private List<Serie> series;
 
     public Creator() {}

@@ -16,11 +16,6 @@ public class SerieServiceImpl implements SerieService{
     private SerieRepository serieRepository;
 
     @Override
-    public List<Serie> getAllSerie() {
-        return serieRepository.findAll();
-    }
-
-    @Override
     public List<Serie> getSerieByName(String name) {
         List<Serie> series = serieRepository.findByName(name);
         if(!series.isEmpty())
@@ -42,6 +37,20 @@ public class SerieServiceImpl implements SerieService{
     }
 
     @Override
+    public Serie getSerieById(Long id) {
+        return serieRepository.findById(id).orElse(null);
+    }
+
+    /*
+
+    OPERACIONES PARA EL SISTEMA, NO UTILIZADAS EN LAS INTERFACES DE LA DESCRIPCION DEL SISTEMA
+    
+    @Override
+    public List<Serie> getAllSerie() {
+        return serieRepository.findAll();
+    }
+    
+    @Override
     public Serie createSerie(Serie serie) {
         return serieRepository.save(serie);
     }
@@ -55,9 +64,5 @@ public class SerieServiceImpl implements SerieService{
         }
         return deleted;
     }
-
-    @Override
-    public Serie getSerieById(Long id) {
-        return serieRepository.findById(id).orElse(null);
-    }
+    */
 }

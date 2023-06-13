@@ -34,12 +34,6 @@ export class SerieUserComponent {
     });
 
       this.userService.getSerieUserInlist(this.email, this.id, this.season)
-      .pipe(
-        catchError((error) => {
-          console.error('Errore durante la chiamata HTTP:', error);
-          return throwError(error);
-        })
-      )
       .subscribe((data: any) => {
         this.serieUser = Object.keys(data).map((key) => {
           return data[key];
@@ -71,12 +65,7 @@ export class SerieUserComponent {
   }
 
   addChapter(num_chapter : number){
-      this.userService.seeChapterFromInlist(this.email, this.id, this.season, num_chapter).pipe(
-        catchError((error) => {
-          console.error('Errore durante la chiamata HTTP addChapterSeenInList:', error);
-          return throwError(error);
-        })
-      )
+      this.userService.seeChapterFromInlist(this.email, this.id, this.season, num_chapter)
       .subscribe((data: any) => {
         this.serieUser = Object.keys(data).map((key) => {
           return data[key];

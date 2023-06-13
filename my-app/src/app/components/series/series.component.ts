@@ -32,13 +32,8 @@ export class SeriesComponent {
   }
 
   handleClick(letter: string) {
-    this.serieService.getSerieByName(letter)
-      .pipe(
-        catchError((error) => {
-          console.error('Errore durante la chiamata HTTP:', error);
-          return throwError(error);
-        })
-      )
+    if(letter){
+      this.serieService.getSerieByName(letter)
       .subscribe((data: any) => {
         this.serieList = Object.keys(data).map((key) => {
           return data[key];
@@ -46,25 +41,7 @@ export class SeriesComponent {
         console.log(this.serieList);
       },
       (err) => {this.printError()});
-  }
-
-  handleSearch() {
-    if(this.searchTerm){
-      this.serieService.getSerieByName(this.searchTerm)
-      .pipe(
-        catchError((error) => {
-          console.error('Errore durante la chiamata HTTP:', error);
-          return throwError(error);
-        })
-      )
-      .subscribe((data: any) => {
-        this.serieList = Object.keys(data).map((key) => {
-          return data[key];
-        });
-        console.log(this.serieList);
-      },
-      (err) => {this.printError()});
-    }
+    } 
   }
 
   printError(){
@@ -73,12 +50,7 @@ export class SeriesComponent {
   }
 
   addToCart(idSerie: number) {
-    this.userService.addSerie(this.email, idSerie).pipe(
-      catchError((error) => {
-        console.error('Errore durante la chiamata HTTP:', error);
-        return throwError(error);
-      })
-    )
+    this.userService.addSerie(this.email, idSerie)
     .subscribe((data: any) => {
       data = Object.keys(data).map((key) => {
         return data[key];

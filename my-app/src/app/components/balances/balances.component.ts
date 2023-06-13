@@ -43,12 +43,7 @@ export class BalancesComponent {
 
     console.log(this.email)
 
-    this.userService.getCurrentBalance(this.email).pipe(
-      catchError((error) => {
-        console.error('Errore durante la chiamata HTTP iniziale:', error);
-        return throwError(error);
-      })
-    )
+    this.userService.getCurrentBalance(this.email)
     .subscribe((data: any) => {
       this.currentBalance = data;
       this.mese = this.currentBalance.month;
@@ -71,23 +66,18 @@ export class BalancesComponent {
       this.mese = this.months[monthIndex-1];
       this.anno = this.anno;
     }
-    this.userService.getSpecificBalance(this.email, this.anno, this.mese).pipe(
-    catchError((error) => {
-      console.error('Errore durante la chiamata HTTP:', error);
-      return throwError(error);
-    })
-  )
-  .subscribe((data: any) => {
-    this.currentBalance= Object.keys(data).map((key) => {
-      return data[key];
-    });
-    this.currentBalance = data;
-    this.amount = this.currentBalance.amount;
-    this.charges = this.currentBalance.charges;
-    console.log(this.currentBalance);
-  },
-  (err) => {this.printError()});
-  }
+    this.userService.getSpecificBalance(this.email, this.anno, this.mese)
+      .subscribe((data: any) => {
+        this.currentBalance= Object.keys(data).map((key) => {
+          return data[key];
+        });
+        this.currentBalance = data;
+        this.amount = this.currentBalance.amount;
+        this.charges = this.currentBalance.charges;
+        console.log(this.currentBalance);
+      },
+      (err) => {this.printError()});
+    }
 
   printError(){
     this.error = true;
@@ -106,22 +96,17 @@ export class BalancesComponent {
       this.mese = this.months[monthIndex+1];
       this.anno = this.currentBalance.year;
     }
-      this.userService.getSpecificBalance(this.email, this.anno, this.mese).pipe(
-      catchError((error) => {
-        console.error('Errore durante la chiamata HTTP:', error);
-        return throwError(error);
-      })
-    )
-    .subscribe((data: any) => {
-      this.currentBalance= Object.keys(data).map((key) => {
-        return data[key];
-      });
-      this.currentBalance = data;
-      this.amount = this.currentBalance.amount;
-      this.charges = this.currentBalance.charges;
-      console.log(this.currentBalance);
-    },
-    (err) => {this.printError()});
+      this.userService.getSpecificBalance(this.email, this.anno, this.mese)
+      .subscribe((data: any) => {
+        this.currentBalance= Object.keys(data).map((key) => {
+          return data[key];
+        });
+        this.currentBalance = data;
+        this.amount = this.currentBalance.amount;
+        this.charges = this.currentBalance.charges;
+        console.log(this.currentBalance);
+      },
+      (err) => {this.printError()});
   }
 
 }

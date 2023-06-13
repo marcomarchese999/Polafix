@@ -49,6 +49,8 @@ public class AppFeeder implements CommandLineRunner{
 		User u1 = new User("paperino@polafix.es", Subscription.NOTSUBSCRIBED, "0000111122223333", "Paperino", "De Paperis", birth1);
         User u2 = new User("topolino@polafix.es", Subscription.SUBSCRIBED, "4444555566667777", "Topolino", "De Topolis", birth2);
 
+        feedSerieUser(u1);
+
 		ur.save(u1);
 		ur.save(u2);
 	}
@@ -113,6 +115,40 @@ public class AppFeeder implements CommandLineRunner{
         setSerie(rotten, rotten2, rottenChapters2);
 
         sr.save(rotten);
+    }
+
+    private void feedSerieUser(User user){
+
+        //------------------------------------3-BRIGERTON--------------------------------------------------------
+        Serie brigerton = new Serie("Brigerton", Type.SILVER, "Rotten is an investigative documentary series, focusing on corruption in the global food supply chain.");
+        
+        Season brigerton1 = new Season("Brigerton1", 1);
+        Chapter brigerton1_1 = new Chapter(1, "Avvocati, pistole e miele", "rotten11");
+        Chapter brigerton1_2 = new Chapter(2, "Il problema delle arachidi", "rotten12");
+        Chapter brigerton1_3 = new Chapter(3, "Alito all'aglio", "rotten13");
+        List<Chapter> brigertonChapters1 = new ArrayList<Chapter>();
+        brigertonChapters1.add(brigerton1_1);
+        brigertonChapters1.add(brigerton1_2);
+        brigertonChapters1.add(brigerton1_3);
+
+        Season brigerton2 = new Season("Brigerton2", 2);
+        Chapter brigerton2_1 = new Chapter(1, "The avocado war", "rotten21");
+        Chapter brigerton2_2 = new Chapter(2, "Regno del terroir", "rotten22");
+        Chapter brigerton2_3 = new Chapter(3, "Troubled water", "rotten23");
+        List<Chapter> brigertonChapters2 = new ArrayList<Chapter>();
+        brigertonChapters2.add(brigerton2_1);
+        brigertonChapters2.add(brigerton2_2);
+        brigertonChapters2.add(brigerton2_3);
+
+        setSerie(brigerton, brigerton1, brigertonChapters1);
+        setSerie(brigerton, brigerton2, brigertonChapters2);
+
+        sr.save(brigerton);
+
+        //------------------Add Brigerton to user-inlist---------------------------------------//
+
+        user.addSerie(brigerton);
+        //ur.save(user);
     }
 
     private void testRepositoryUser(){

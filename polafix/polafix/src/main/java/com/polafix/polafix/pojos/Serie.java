@@ -19,24 +19,25 @@ import com.polafix.polafix.controller.Views;
 @Entity
 public class Serie {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView ({Views.SerieDescription.class})
-    private Long idSerie;
-    @JsonView ({Views.SerieDescription.class})
-    private String name;
-    @JsonView ({Views.SerieUserDescription.class})
-    private Type type;
-    @JsonView ({Views.SerieDescription.class})
-    private String shortDescription;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Season> seasons;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.AUTO) 
+    @JsonView ({Views.SerieDescription.class}) 
+    private Long idSerie; 
+    @JsonView ({Views.SerieDescription.class}) 
+    private String name; 
+    @JsonView ({Views.SerieUserDescription.class}) 
+    private Type type; 
+    @JsonView ({Views.SerieDescription.class}) 
+    private String shortDescription; 
+    @OneToMany(cascade = CascadeType.ALL) 
+    private List<Season> seasons; 
+    @ManyToMany  
+    @JsonView ({Views.SerieDescription.class}) 
+    private List<Actor> actors; 
     @ManyToMany
-    @JsonView ({Views.SerieDescription.class})
-    private List<Actor> actors;
-    @ManyToMany
-    @JsonView ({Views.SerieDescription.class})
+    @JsonView ({Views.SerieDescription.class}) 
     private List<Creator> creators;
+
 
     public Serie() {}
 
@@ -108,43 +109,27 @@ public class Serie {
     }
 
     public void setSeasons(List<Season> stagioni){
-        for(int i=0; i<stagioni.size(); i++){
-            if(!seasons.contains(stagioni.get(i)))
-                this.addSeason(stagioni.get(i));
+        for(Season season : stagioni){
+            addSeason(season);
         }
     }
 
     public void setActors(List<Actor> attori){
-        for(int i=0; i<attori.size(); i++){
-            if(!actors.contains(attori.get(i)))
-                this.addActor(attori.get(i));
+        for(Actor actor : attori){
+            addActor(actor);
         }
     }
 
     public void setCreators(List<Creator> creatori){
-        for(int i=0; i<creatori.size(); i++){
-            if(!creators.contains(creatori.get(i)))
-                this.addCreator(creatori.get(i));
+        for(Creator creator : creatori){
+           addCreator(creator);
         }
-    }
-    
-    public Season getSeason(String title){
-        for(int i=0; i<this.getSeasons().size(); i++){
-            if(this.getSeasons().get(i).getTitle().equals(title)){
-                return this.getSeasons().get(i);
-            }
-        }
-        return null;
-    }
-
-    public Chapter getChapter(Season season, String title){
-        return season.getChapter(title);
     }
 
     public Season getSeason(int number){
-        for(int i=0; i<this.getSeasons().size(); i++){
-            if(this.getSeasons().get(i).getNumber()==number){
-                return this.getSeasons().get(i);
+        for(Season season : this.getSeasons()){
+            if(season.getNumber()==number){
+                return season;
             }
         }
         return null;
